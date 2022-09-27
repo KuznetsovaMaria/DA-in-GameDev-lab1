@@ -41,6 +41,8 @@
 
 ![2022-09-27](https://user-images.githubusercontent.com/113997426/192476720-bdab6f9e-f230-4b15-bf48-d06bc91c0627.png)
 ![2022-09-27 (1)](https://user-images.githubusercontent.com/113997426/192476784-992599a8-ffd9-450c-8759-f09ddd46bf7a.png)
+![2022-09-27 (2)](https://user-images.githubusercontent.com/113997426/192485162-ff2a1642-3249-4aad-8267-86a9c77352b4.png)
+
 
 ## Задание 1
 ### Пошагово выполнить каждый пункт раздела "ход работы" с описанием и примерами реализации задач
