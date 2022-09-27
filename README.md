@@ -40,11 +40,17 @@
 
 ## Задание 1
 ### Пошагово выполнить каждый пункт раздела "ход работы" с описанием и примерами реализации задач
-
+# Ход работы:
+В google colab написать код, сохранить на диске, запустить
 
 ![2022-09-27](https://user-images.githubusercontent.com/113997426/192476720-bdab6f9e-f230-4b15-bf48-d06bc91c0627.png)
 ![2022-09-27 (1)](https://user-images.githubusercontent.com/113997426/192476784-992599a8-ffd9-450c-8759-f09ddd46bf7a.png)
+
+В unity создать скрипт на c#, в нем написать код, прикрепить скрипт к объекту, запустить
+![2022-09-27 (5)](https://user-images.githubusercontent.com/113997426/192563101-dc4bea6e-4dd3-4f85-8e84-3d580b4669c7.png)
 ![2022-09-27 (2)](https://user-images.githubusercontent.com/113997426/192485162-ff2a1642-3249-4aad-8267-86a9c77352b4.png)
+
+## Задание 2
 
 Ход работы:
 - Произвести подготовку данных для работы с алгоритмом линейной регрессии. 10 видов данных были установлены случайным образом, и данные находились в линейной зависимости. Данные преобразуются в формат массива, чтобы их можно было вычислить напрямую при использовании умножения и сложения.
@@ -69,69 +75,36 @@ plt.scatter(x,y)
 
 ```
 
-- Определите связанные функции. Функция модели: определяет модель линейной регрессии wx+b. Функция потерь: функция потерь среднеквадратичной ошибки. Функция оптимизации: метод градиентного спуска для нахождения частных производных w и b.
-
-## Задание 2
-### Должна ли величина loss стремиться к нулю при изменении исходных данных? Ответьте на вопрос, приведите пример выполнения кода, который подтверждает ваш ответ.
-
-
 Выполнение:
-![2022-09-27 (3)](https://user-images.githubusercontent.com/113997426/192496848-460ac52a-b31f-4225-88fa-0a2f4a45c6ea.png)
-![2022-09-27 (4)](https://user-images.githubusercontent.com/113997426/192496879-a3e8254b-fc70-42c8-a196-8d7568e3b5cc.png)
+Подготовка данных
+![2022-09-27 (6)](https://user-images.githubusercontent.com/113997426/192563858-c4e07e58-4a18-4b20-aa1d-decdff66a332.png)
+- Определите связанные функции. Функция модели: определяет модель линейной регрессии wx+b. Функция потерь: функция потерь среднеквадратичной ошибки. Функция оптимизации: метод градиентного спуска для нахождения частных производных w и b.
+![2022-09-27 (7)](https://user-images.githubusercontent.com/113997426/192565762-fc23d18f-8b9b-41f2-a02a-be031c58abcb.png)
+Начало итерации
+# Шаг 1. Инициализация и модель итеративной оптимизации
+![2022-09-27 (8)](https://user-images.githubusercontent.com/113997426/192567675-10904894-4b2e-4049-88a7-8381ce78b79d.png)
+# Шаг 2. На второй итерации отображаются значения параметров, значения потерь и эффекты визуализации после итерации
+![2022-09-27 (9)](https://user-images.githubusercontent.com/113997426/192568113-1ca8f9bd-03ee-4047-a1c7-c5ae78493453.png)
+# Шаг 3. Третья итерация показывает значения параметров, значения потерь и визуализацию после итерации
+![2022-09-27 (10)](https://user-images.githubusercontent.com/113997426/192568574-71c572d3-ed95-497e-ba34-dcd0fd6a8371.png)
+# Шаг 4. На четвертой итерации отображаются значения параметров, значения потерь и эффекты визуализации
+![2022-09-27 (11)](https://user-images.githubusercontent.com/113997426/192568919-5d20c9ff-3e18-4eb7-8787-d829dbf238af.png)
+# Шаг 5. Пятая итерация показывает значение параметра, значение потерь и эффект визуализации после итерации
+![2022-09-27 (12)](https://user-images.githubusercontent.com/113997426/192569345-b93e553c-ce05-4cea-be69-84cb0372e0ed.png)
+# Шаг 6. 10000-я итерация, показывающая значения параметров, потери и визуализацию после итерации
+![2022-09-27 (13)](https://user-images.githubusercontent.com/113997426/192570086-79ed7297-81f9-4dc5-9ce4-c7f11c42f11b.png)
+
+
 Ходу работы следовали:
 Код написали, данные подготовили, график построили
-
-
-- Перечисленные в этом туториале действия могут быть выполнены запуском на исполнение скрипт-файла, доступного [в репозитории](https://github.com/Den1sovDm1triy/hfss-scripting/blob/main/ScreatingSphereInAEDT.py).
-- Для запуска скрипт-файла откройте Ansys Electronics Desktop. Перейдите во вкладку [Automation] - [Run Script] - [Выберите файл с именем ScreatingSphereInAEDT.py из репозитория].
-
-```py
-
-import ScriptEnv
-ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
-oDesktop.RestoreWindow()
-oProject = oDesktop.NewProject()
-oProject.Rename("C:/Users/denisov.dv/Documents/Ansoft/SphereDIffraction.aedt", True)
-oProject.InsertDesign("HFSS", "HFSSDesign1", "HFSS Terminal Network", "")
-oDesign = oProject.SetActiveDesign("HFSSDesign1")
-oEditor = oDesign.SetActiveEditor("3D Modeler")
-oEditor.CreateSphere(
-	[
-		"NAME:SphereParameters",
-		"XCenter:="		, "0mm",
-		"YCenter:="		, "0mm",
-		"ZCenter:="		, "0mm",
-		"Radius:="		, "1.0770329614269mm"
-	], 
-)
 
 ```
 
 ## Задание 3
+### Должна ли величина loss стремиться к нулю при изменении исходных данных? Ответьте на вопрос, приведите пример выполнения кода, который подтверждает ваш ответ.
 ### Какова роль параметра Lr? Ответьте на вопрос, приведите пример выполнения кода, который подтверждает ваш ответ. В качестве эксперимента можете изменить значение параметра.
-
-- Перечисленные в этом туториале действия могут быть выполнены запуском на исполнение скрипт-файла, доступного [в репозитории](https://github.com/Den1sovDm1triy/hfss-scripting/blob/main/ScreatingSphereInAEDT.py).
-- Для запуска скрипт-файла откройте Ansys Electronics Desktop. Перейдите во вкладку [Automation] - [Run Script] - [Выберите файл с именем ScreatingSphereInAEDT.py из репозитория].
-
-```py
-
-import ScriptEnv
-ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
-oDesktop.RestoreWindow()
-oProject = oDesktop.NewProject()
-oProject.Rename("C:/Users/denisov.dv/Documents/Ansoft/SphereDIffraction.aedt", True)
-oProject.InsertDesign("HFSS", "HFSSDesign1", "HFSS Terminal Network", "")
-oDesign = oProject.SetActiveDesign("HFSSDesign1")
-oEditor = oDesign.SetActiveEditor("3D Modeler")
-oEditor.CreateSphere(
-	[
-		"NAME:SphereParameters",
-		"XCenter:="		, "0mm",
-		"YCenter:="		, "0mm",
-		"ZCenter:="		, "0mm",
-		"Radius:="		, "1.0770329614269mm"
-	], 
-)
+Параметр Lr влияет на наклон прямой графика, на a, b
+![2022-09-27 (14)](https://user-images.githubusercontent.com/113997426/192572233-89d0f263-c866-4e2d-b54f-9218a368dd80.png)
 
 ```
 
