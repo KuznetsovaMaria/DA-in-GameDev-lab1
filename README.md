@@ -7,7 +7,7 @@
 | Задание | Выполнение | Баллы |
 | ------ | ------ | ------ |
 | Задание 1 | * | 60 |
-| Задание 2 | # | 20 |
+| Задание 2 | * | 20 |
 | Задание 3 | # | 20 |
 
 знак "*" - задание выполнено; знак "#" - задание не выполнено;
@@ -181,6 +181,71 @@ public class NewBehaviourScript : MonoBehaviour
 ## Задание 2
 
 Ход работы:
+
+Доработала программу из первой лабораторной работы с помощью кода из первого задания
+
+```c#
+import numpy as np
+import gspread
+
+x = [3, 21, 22, 34, 54, 34, 55, 67, 89, 99]
+x = np.array(x)
+y = [2, 22, 24, 65, 79, 82, 55, 130, 150, 199]
+y = np.array(y)
+
+def model(a, b, x):
+    return a * x + b
+
+def loss_function(a, b, x, y):
+    num = len(x)
+    prediction = model(a, b, x)
+    return (0.5 / num) * (np.square(prediction - y)).sum()
+
+def optimize(a, b, x, y):
+    num = len(x)
+    prediction = model(a, b, x)
+    da = (1.0 / num) * ((prediction - y) * x).sum()
+    db = (1.0 / num) * ((prediction - y).sum())
+    a = a - Lr * da
+    b = b - Lr * db
+    return a, b
+
+def iterate(a, b, x, y, times):
+    for i in range(times):
+        a, b = optimize(a, b, x, y)
+    return a, b
+
+a = np.random.rand(1)
+b = np.random.rand(1)
+Lr = 0.000001
+
+gc = gspread.service_account(filename='unitydatascience-365113-431cc5577ef5.json')
+sh = gc.open("UnitySheets")
+price = np.random.randint(2000, 10000, 11)
+mon = list(range(1,11))
+i = 0
+while i <= len(mon):
+    i += 1
+    if i == 0:
+        continue
+    else:
+        a, b = iterate(a, b, x, y, 100)
+        prediction = model(a, b, x)
+        loss = loss_function(a, b, x, y)
+        tempInf = loss
+        tempInf = str(tempInf)
+        tempInf = tempInf.replace('.', ',')
+        sh.sheet1.update(('A' + str(i)), str(i))
+        sh.sheet1.update(('B' + str(i)), str(tempInf))
+        print(tempInf)
+
+```
+
+Вывод получившихся данных в таблицу работает успешно
+
+![2022-10-11 (11)](https://user-images.githubusercontent.com/113997426/195142429-dfe4fe09-3e60-43fe-a614-d6ad5ea80998.png)
+
+![2022-10-11 (13)](https://user-images.githubusercontent.com/113997426/195142675-c463e9bc-69f4-4917-b417-e16ef7e66845.png)
 
 
 ## Задание 3
