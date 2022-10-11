@@ -42,17 +42,23 @@
 ### Пошагово выполнить каждый пункт раздела "ход работы" с описанием и примерами реализации задач
 # Ход работы:
 Создала и настроила новый проект в google console
+
 ![2022-10-10 (2)](https://user-images.githubusercontent.com/113997426/195037462-124d406b-b698-457c-bf23-1333fcc8fec9.png)
+
 ![2022-10-10 (3)](https://user-images.githubusercontent.com/113997426/195037532-8f04b564-0741-4e28-8477-efa93a585929.png)
 
 Создала новую таблицу в google sheets и настроила доступ
+
 ![2022-10-10 (6)](https://user-images.githubusercontent.com/113997426/195037725-63d2e7c1-2cfc-45ba-8376-384ccb76e489.png)
 
 В pycharm написала программу, связала с таблицей. В результате запуска программы полученные значения переносятся в таблицу
+
 ![2022-10-10 (9)](https://user-images.githubusercontent.com/113997426/195038041-f006339c-ccdf-4aa0-9dd8-56284ccacfeb.png)
+
 ![2022-10-10 (11)](https://user-images.githubusercontent.com/113997426/195038067-322e5abc-6d8e-4c75-a7be-c53e588875db.png)
 
 Создала проект в Unity, подгрузила предоставленные файлы, создала C# скрипт. В скрипет реализовала программу
+
 
 using System.Collections;
 using System.Collections.Generic;
