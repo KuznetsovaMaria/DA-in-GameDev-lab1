@@ -41,14 +41,121 @@
 ## Задание 1
 ### Пошагово выполнить каждый пункт раздела "ход работы" с описанием и примерами реализации задач
 # Ход работы:
-В google colab написать код, сохранить на диске, запустить
+Создала и настроила новый проект в google console
+![2022-10-10 (2)](https://user-images.githubusercontent.com/113997426/195037462-124d406b-b698-457c-bf23-1333fcc8fec9.png)
+![2022-10-10 (3)](https://user-images.githubusercontent.com/113997426/195037532-8f04b564-0741-4e28-8477-efa93a585929.png)
 
-![2022-09-27](https://user-images.githubusercontent.com/113997426/192476720-bdab6f9e-f230-4b15-bf48-d06bc91c0627.png)
-![2022-09-27 (1)](https://user-images.githubusercontent.com/113997426/192476784-992599a8-ffd9-450c-8759-f09ddd46bf7a.png)
+Создала новую таблицу в google sheets и настроила доступ
+![2022-10-10 (6)](https://user-images.githubusercontent.com/113997426/195037725-63d2e7c1-2cfc-45ba-8376-384ccb76e489.png)
 
-В unity создать скрипт на c#, в нем написать код, прикрепить скрипт к объекту, запустить
-![2022-09-27 (5)](https://user-images.githubusercontent.com/113997426/192563101-dc4bea6e-4dd3-4f85-8e84-3d580b4669c7.png)
-![2022-09-27 (2)](https://user-images.githubusercontent.com/113997426/192485162-ff2a1642-3249-4aad-8267-86a9c77352b4.png)
+В pycharm написала программу, связала с таблицей. В результате запуска программы полученные значения переносятся в таблицу
+![2022-10-10 (9)](https://user-images.githubusercontent.com/113997426/195038041-f006339c-ccdf-4aa0-9dd8-56284ccacfeb.png)
+![2022-10-10 (11)](https://user-images.githubusercontent.com/113997426/195038067-322e5abc-6d8e-4c75-a7be-c53e588875db.png)
+
+Создала проект в Unity, подгрузила предоставленные файлы, создала C# скрипт. В скрипет реализовала программу
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
+using SimpleJSON;
+
+
+public class NewBehaviourScript : MonoBehaviour
+{
+    public AudioClip GoodSpeak;
+
+    public AudioClip NormalSpeak;
+
+    public AudioClip BadSpeak;
+
+    private AudioSource SelectAudio;
+
+    private Dictionary<string, float> dataSet = new Dictionary<string, float>();
+
+    private bool statusStart = false;
+
+    private int i = 1;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        StartCoroutine(GoogleSheets());
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (dataSet["Mon_" + i.ToString()] <= 10 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioGood());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+
+        if (dataSet["Mon_" + i.ToString()] > 10 & dataSet["Mon_" + i.ToString()] < 100 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioNormal());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+
+        if (dataSet["Mon_" + i.ToString()] >= 100 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioBad());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+    }
+
+    IEnumerator GoogleSheets()
+    {
+        UnityWebRequest currentResp = UnityWebRequest.Get("https://sheets.googleapis.com/v4/spreadsheets/1b-WZ4ZITn-KI7LYBrqpWbNIMmcfSebJlSIr2Nl1JeYA/values/Лист1?key=AIzaSyBZnRELGhNuTzdA7vZUyrebhqM_htng3wk");
+        yield return currentResp.SendWebRequest();
+        string rawResp = currentResp.downloadHandler.text;
+        var rawJSON = JSON.Parse(rawResp);
+        foreach (var itemRawJSON in rawJSON["values"])
+        {
+            var parseJSON = JSON.Parse(itemRawJSON.ToString());
+            var selectRow = parseJSON[0].AsStringList;
+            dataSet.Add("Mon_" + selectRow[0], float.Parse(selectRow[2]));
+        }
+        //Debug.Log(dataSet["Mon_1"]);
+
+
+    }
+
+    IEnumerator PlaySelectAudioGood()
+    {
+        statusStart = true;
+        SelectAudio = GetComponent<AudioSource>();
+        SelectAudio.clip = GoodSpeak;
+        SelectAudio.Play();
+        yield return new WaitForSeconds(3);
+        statusStart = false;
+        i++;
+    }
+    IEnumerator PlaySelectAudioNormal()
+    {
+        statusStart = true;
+        SelectAudio = GetComponent<AudioSource>();
+        SelectAudio.clip = NormalSpeak;
+        SelectAudio.Play();
+        yield return new WaitForSeconds(3);
+        statusStart = false;
+        i++;
+    }
+    IEnumerator PlaySelectAudioBad()
+    {
+        statusStart = true;
+        SelectAudio = GetComponent<AudioSource>();
+        SelectAudio.clip = BadSpeak;
+        SelectAudio.Play();
+        yield return new WaitForSeconds(4);
+        statusStart = false;
+        i++;
+    }
+
+}
+
 
 ## Задание 2
 
