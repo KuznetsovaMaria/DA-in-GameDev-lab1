@@ -7,8 +7,8 @@
 | Задание | Выполнение | Баллы |
 | ------ | ------ | ------ |
 | Задание 1 | * | 60 |
-| Задание 2 | * | 20 |
-| Задание 3 | * | 20 |
+| Задание 2 | # | 20 |
+| Задание 3 | # | 20 |
 
 знак "*" - задание выполнено; знак "#" - задание не выполнено;
 
@@ -57,35 +57,133 @@
 
 ![2022-10-10 (11)](https://user-images.githubusercontent.com/113997426/195038067-322e5abc-6d8e-4c75-a7be-c53e588875db.png)
 
-Создала проект в Unity, подгрузила предоставленные файлы, создала C# скрипт. В скрипет реализовала программу
+Создала проект в Unity, подгрузила предоставленные файлы, создала C# скрипт. В скрипте реализовала программу
 
 ![2022-10-11 (2)](https://user-images.githubusercontent.com/113997426/195039855-070efe68-1979-4760-964b-08441d4c2337.png)
 
 ![2022-10-11 (3)](https://user-images.githubusercontent.com/113997426/195039976-522b7633-f68a-4ae3-bfd6-d90151eabf7c.png)
 
+Настроила объект и дополнительные параметры в проекте Unity
+При запуске программы на консоль выводятся числа из таблицы, проигрывается нужное аудиосопровождение для каждой строки
+
+![2022-10-11 (5)](https://user-images.githubusercontent.com/113997426/195041103-b9a09189-85f8-4547-832c-5baada3fddd0.png)
+
+При повторном запуске программы в PyCharm числа меняются, проект в Unity срабатывает корректно
+
+![2022-10-11 (7)](https://user-images.githubusercontent.com/113997426/195041458-457fff7b-24c3-4419-8c96-77f3cdb70d17.png)
+
+![2022-10-11 (9)](https://user-images.githubusercontent.com/113997426/195041864-27b9ed51-677d-40d7-88a4-ed8751b28fda.png)
+
+
 
 ## Задание 2
 
 Ход работы:
-- Произвести подготовку данных для работы с алгоритмом линейной регрессии. 10 видов данных были установлены случайным образом, и данные находились в линейной зависимости. Данные преобразуются в формат массива, чтобы их можно было вычислить напрямую при использовании умножения и сложения.
 
-```py
 
-In [ ]:
-#Import the required modules, numpy for calculation, and Matplotlib for drawing
-import numpy as np
-import matplotlib.pyplot as plt
-#This code is for jupyter Notebook only
-%matplotlib inline
+```c#
 
-# define data, and change list to array
-x = [3,21,22,34,54,34,55,67,89,99]
-x = np.array(x)
-y = [2,22,24,65,79,82,55,130,150,199]
-y = np.array(y)
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
+using SimpleJSON;
 
-#Show the effect of a scatter plot
-plt.scatter(x,y)
+
+public class NewBehaviourScript : MonoBehaviour
+{
+    public AudioClip GoodSpeak;
+
+    public AudioClip NormalSpeak;
+
+    public AudioClip BadSpeak;
+
+    private AudioSource SelectAudio;
+
+    private Dictionary<string, float> dataSet = new Dictionary<string, float>();
+
+    private bool statusStart = false;
+
+    private int i = 1;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        StartCoroutine(GoogleSheets());
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (dataSet["Mon_" + i.ToString()] <= 10 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioGood());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+
+        if (dataSet["Mon_" + i.ToString()] > 10 & dataSet["Mon_" + i.ToString()] < 100 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioNormal());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+
+        if (dataSet["Mon_" + i.ToString()] >= 100 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioBad());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+    }
+
+    IEnumerator GoogleSheets()
+    {
+        UnityWebRequest currentResp = UnityWebRequest.Get("https://sheets.googleapis.com/v4/spreadsheets/1b-WZ4ZITn-KI7LYBrqpWbNIMmcfSebJlSIr2Nl1JeYA/values/Лист1?key=AIzaSyBZnRELGhNuTzdA7vZUyrebhqM_htng3wk");
+        yield return currentResp.SendWebRequest();
+        string rawResp = currentResp.downloadHandler.text;
+        var rawJSON = JSON.Parse(rawResp);
+        foreach (var itemRawJSON in rawJSON["values"])
+        {
+            var parseJSON = JSON.Parse(itemRawJSON.ToString());
+            var selectRow = parseJSON[0].AsStringList;
+            dataSet.Add("Mon_" + selectRow[0], float.Parse(selectRow[2]));
+        }
+        //Debug.Log(dataSet["Mon_1"]);
+
+
+    }
+
+    IEnumerator PlaySelectAudioGood()
+    {
+        statusStart = true;
+        SelectAudio = GetComponent<AudioSource>();
+        SelectAudio.clip = GoodSpeak;
+        SelectAudio.Play();
+        yield return new WaitForSeconds(3);
+        statusStart = false;
+        i++;
+    }
+    IEnumerator PlaySelectAudioNormal()
+    {
+        statusStart = true;
+        SelectAudio = GetComponent<AudioSource>();
+        SelectAudio.clip = NormalSpeak;
+        SelectAudio.Play();
+        yield return new WaitForSeconds(3);
+        statusStart = false;
+        i++;
+    }
+    IEnumerator PlaySelectAudioBad()
+    {
+        statusStart = true;
+        SelectAudio = GetComponent<AudioSource>();
+        SelectAudio.clip = BadSpeak;
+        SelectAudio.Play();
+        yield return new WaitForSeconds(4);
+        statusStart = false;
+        i++;
+    }
+
+}
 
 ```
 
