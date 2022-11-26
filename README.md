@@ -60,6 +60,7 @@
 5) Создала и привязала к RollerAgent новый скрипт С#
 
 ''' c#
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -117,6 +118,7 @@ public class RollerAgent : Agent
         }
     }
 }
+
 '''
 
 
