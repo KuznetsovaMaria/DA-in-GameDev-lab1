@@ -7,7 +7,7 @@
 | Задание | Выполнение | Баллы |
 | ------ | ------ | ------ |
 | Задание 1 | * | 60 |
-| Задание 2 | * | 20 |
+| Задание 2 | # | 20 |
 | Задание 3 | # | 20 |
 
 знак "*" - задание выполнено; знак "#" - задание не выполнено;
@@ -35,224 +35,103 @@
 - ✨Magic ✨
 
 ## Цель работы
-Ознакомиться с основными операторами зыка Python на примере реализации линейной регрессии.
+Познакомиться с программными средствами для создания системы машинного обучения и ее интеграции в Unity.
 
 
 ## Задание 1
 ### Пошагово выполнить каждый пункт раздела "ход работы" с описанием и примерами реализации задач
 # Ход работы:
-Создала и настроила новый проект в google console
+1) Создала новый проект в Unity, скачала необходимые для выполнения лабораторной работы материалы, добавила ML agent
 
-![2022-10-10 (2)](https://user-images.githubusercontent.com/113997426/195037462-124d406b-b698-457c-bf23-1333fcc8fec9.png)
+![2022-11-26 (19)](https://user-images.githubusercontent.com/113997426/204080705-be147cc7-cc84-4a2a-a6d4-2021207a8bbf.png)
 
-![2022-10-10 (3)](https://user-images.githubusercontent.com/113997426/195037532-8f04b564-0741-4e28-8477-efa93a585929.png)
+2) Активировала новый mlagent 
 
-Создала новую таблицу в google sheets и настроила доступ
+![2022-11-26 (21)](https://user-images.githubusercontent.com/113997426/204080783-e57f2532-a2bd-4ee5-aec8-0261a86c7cfc.png)
 
-![2022-10-10 (6)](https://user-images.githubusercontent.com/113997426/195037725-63d2e7c1-2cfc-45ba-8376-384ccb76e489.png)
+3) Установила torch
 
-В pycharm написала программу, связала с таблицей. В результате запуска программы полученные значения переносятся в таблицу
+![2022-11-26 (23)](https://user-images.githubusercontent.com/113997426/204080854-c3b2502d-7814-4e48-a602-fca5cbef885e.png)
 
-![2022-10-10 (9)](https://user-images.githubusercontent.com/113997426/195038041-f006339c-ccdf-4aa0-9dd8-56284ccacfeb.png)
+4) Создала сцену с шаром (RollerAgent) и кубом (Target) на плоскости, добавила материалы
 
-![2022-10-10 (11)](https://user-images.githubusercontent.com/113997426/195038067-322e5abc-6d8e-4c75-a7be-c53e588875db.png)
+![2022-11-26 (25)](https://user-images.githubusercontent.com/113997426/204080945-1391ffb4-ca91-4255-8b0f-18eb8cbb7627.png)
 
-Создала проект в Unity, подгрузила предоставленные файлы, создала C# скрипт. В скрипте реализовала программу
+5) Создала и привязала к RollerAgent новый скрипт С#
 
-```c#
-
+''' c#
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
-using SimpleJSON;
+using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 
-
-public class NewBehaviourScript : MonoBehaviour
+public class RollerAgent : Agent
 {
-    public AudioClip GoodSpeak;
+    Rigidbody rBody;
 
-    public AudioClip NormalSpeak;
-
-    public AudioClip BadSpeak;
-
-    private AudioSource SelectAudio;
-
-    private Dictionary<string, float> dataSet = new Dictionary<string, float>();
-
-    private bool statusStart = false;
-
-    private int i = 1;
-
-
-    // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GoogleSheets());
+        rBody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public Transform Target;
+    public override void OnEpisodeBegin()
     {
-        if (dataSet["Mon_" + i.ToString()] <= 10 & statusStart == false & i != dataSet.Count)
+        if (this.transform.localPosition.y < 0)
         {
-            StartCoroutine(PlaySelectAudioGood());
-            Debug.Log(dataSet["Mon_" + i.ToString()]);
+            this.rBody.angularVelocity = Vector3.zero;
+            this.rBody.velocity = Vector3.zero;
+            this.transform.localPosition = new Vector3(0, 0.5f, 0);
         }
 
-        if (dataSet["Mon_" + i.ToString()] > 10 & dataSet["Mon_" + i.ToString()] < 100 & statusStart == false & i != dataSet.Count)
+        Target.localPosition = new Vector3(Random.value * 8-4, 0.5f, Random.value * 8-4);
+    }
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        sensor.AddObservation(Target.localPosition);
+        sensor.AddObservation(this.transform.localPosition);
+        sensor.AddObservation(rBody.velocity.x);
+        sensor.AddObservation(rBody.velocity.z);
+    }
+    public float forceMultiplier = 10;
+
+    public override void OnActionReceived(ActionBuffers actionBuffers)
+    {
+        Vector3 controlSignal = Vector3.zero;
+        controlSignal.x = actionBuffers.ContinuousActions[0];
+        controlSignal.z = actionBuffers.ContinuousActions[1];
+        rBody.AddForce(controlSignal * forceMultiplier);
+
+        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+
+        if(distanceToTarget < 1.42f)
         {
-            StartCoroutine(PlaySelectAudioNormal());
-            Debug.Log(dataSet["Mon_" + i.ToString()]);
+            SetReward(1.0f);
+            EndEpisode();
         }
-
-        if (dataSet["Mon_" + i.ToString()] >= 100 & statusStart == false & i != dataSet.Count)
+        else if (this.transform.localPosition.y < 0)
         {
-            StartCoroutine(PlaySelectAudioBad());
-            Debug.Log(dataSet["Mon_" + i.ToString()]);
+            EndEpisode();
         }
     }
-
-    IEnumerator GoogleSheets()
-    {
-        UnityWebRequest currentResp = UnityWebRequest.Get("https://sheets.googleapis.com/v4/spreadsheets/1b-WZ4ZITn-KI7LYBrqpWbNIMmcfSebJlSIr2Nl1JeYA/values/Лист1?key=AIzaSyBZnRELGhNuTzdA7vZUyrebhqM_htng3wk");
-        yield return currentResp.SendWebRequest();
-        string rawResp = currentResp.downloadHandler.text;
-        var rawJSON = JSON.Parse(rawResp);
-        foreach (var itemRawJSON in rawJSON["values"])
-        {
-            var parseJSON = JSON.Parse(itemRawJSON.ToString());
-            var selectRow = parseJSON[0].AsStringList;
-            dataSet.Add("Mon_" + selectRow[0], float.Parse(selectRow[2]));
-        }
-        //Debug.Log(dataSet["Mon_1"]);
-
-
-    }
-
-    IEnumerator PlaySelectAudioGood()
-    {
-        statusStart = true;
-        SelectAudio = GetComponent<AudioSource>();
-        SelectAudio.clip = GoodSpeak;
-        SelectAudio.Play();
-        yield return new WaitForSeconds(3);
-        statusStart = false;
-        i++;
-    }
-    IEnumerator PlaySelectAudioNormal()
-    {
-        statusStart = true;
-        SelectAudio = GetComponent<AudioSource>();
-        SelectAudio.clip = NormalSpeak;
-        SelectAudio.Play();
-        yield return new WaitForSeconds(3);
-        statusStart = false;
-        i++;
-    }
-    IEnumerator PlaySelectAudioBad()
-    {
-        statusStart = true;
-        SelectAudio = GetComponent<AudioSource>();
-        SelectAudio.clip = BadSpeak;
-        SelectAudio.Play();
-        yield return new WaitForSeconds(4);
-        statusStart = false;
-        i++;
-    }
-
 }
-
-```
-
-Настроила объект и дополнительные параметры в проекте Unity
-При запуске программы на консоль выводятся числа из таблицы, проигрывается нужное аудиосопровождение для каждой строки
-
-![2022-10-11 (5)](https://user-images.githubusercontent.com/113997426/195041103-b9a09189-85f8-4547-832c-5baada3fddd0.png)
-
-При повторном запуске программы в PyCharm числа меняются, проект в Unity срабатывает корректно
-
-![2022-10-11 (7)](https://user-images.githubusercontent.com/113997426/195041458-457fff7b-24c3-4419-8c96-77f3cdb70d17.png)
-
-![2022-10-11 (9)](https://user-images.githubusercontent.com/113997426/195041864-27b9ed51-677d-40d7-88a4-ed8751b28fda.png)
-
+'''
 
 
 ## Задание 2
 
 Ход работы:
 
-Доработала программу из первой лабораторной работы с помощью кода из первого задания
 
-```c#
-import numpy as np
-import gspread
-
-x = [3, 21, 22, 34, 54, 34, 55, 67, 89, 99]
-x = np.array(x)
-y = [2, 22, 24, 65, 79, 82, 55, 130, 150, 199]
-y = np.array(y)
-
-def model(a, b, x):
-    return a * x + b
-
-def loss_function(a, b, x, y):
-    num = len(x)
-    prediction = model(a, b, x)
-    return (0.5 / num) * (np.square(prediction - y)).sum()
-
-def optimize(a, b, x, y):
-    num = len(x)
-    prediction = model(a, b, x)
-    da = (1.0 / num) * ((prediction - y) * x).sum()
-    db = (1.0 / num) * ((prediction - y).sum())
-    a = a - Lr * da
-    b = b - Lr * db
-    return a, b
-
-def iterate(a, b, x, y, times):
-    for i in range(times):
-        a, b = optimize(a, b, x, y)
-    return a, b
-
-a = np.random.rand(1)
-b = np.random.rand(1)
-Lr = 0.000001
-
-gc = gspread.service_account(filename='unitydatascience-365113-431cc5577ef5.json')
-sh = gc.open("UnitySheets")
-price = np.random.randint(2000, 10000, 11)
-mon = list(range(1,11))
-i = 0
-while i <= len(mon):
-    i += 1
-    if i == 0:
-        continue
-    else:
-        a, b = iterate(a, b, x, y, 100)
-        prediction = model(a, b, x)
-        loss = loss_function(a, b, x, y)
-        tempInf = loss
-        tempInf = str(tempInf)
-        tempInf = tempInf.replace('.', ',')
-        sh.sheet1.update(('A' + str(i)), str(i))
-        sh.sheet1.update(('B' + str(i)), str(tempInf))
-        print(tempInf)
-
-```
-
-Вывод получившихся данных в таблицу работает успешно
-
-![2022-10-11 (11)](https://user-images.githubusercontent.com/113997426/195142429-dfe4fe09-3e60-43fe-a614-d6ad5ea80998.png)
-
-![2022-10-11 (13)](https://user-images.githubusercontent.com/113997426/195142675-c463e9bc-69f4-4917-b417-e16ef7e66845.png)
 
 
 ## Задание 3
 
 
 ## Выводы
-В ходе лабораторной работы #2, следуя инструкциям и методическим указаниям, ознакомилась с программными средствами для организации передачи данных между инструментами google, python & unity
+
 
 | Plugin | README |
 | ------ | ------ |
