@@ -121,6 +121,38 @@ public class RollerAgent : Agent
 
 ```
 
+6) Объекту RollerAgent добавила и настроила необходимые компоненты: Rigidbody, Decision Requester, Behavior Parameters
+
+![2022-11-26 (27)](https://user-images.githubusercontent.com/113997426/204082339-fa598236-4990-4879-9aa8-d98803f586db.png)
+
+7) Добавила yaml файл, внесла код
+
+```
+behaviors:
+  RollerBall:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 10
+      buffer_size: 100
+      learning_rate: 3.0e-4
+      beta: 5.0e-4
+      epsilon: 0.2
+      lambd: 0.99
+      num_epoch: 3
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    max_steps: 500000
+    time_horizon: 64
+    summary_freq: 10000
+    
+```
 
 ## Задание 2
 
