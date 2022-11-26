@@ -154,11 +154,30 @@ behaviors:
     
 ```
 
+8) Запустила работу mlagent 
+
+![2022-11-26 (31)](https://user-images.githubusercontent.com/113997426/204082556-40a8189a-2487-41fa-949b-d250a8da4a23.png)
+
+9) Запустила сцену с 1, 9 и 36 копиями модели
+
+![2022-11-26 (32)](https://user-images.githubusercontent.com/113997426/204082667-cbf3faf1-adf1-4521-a376-6762808ccf54.png)
+
+![2022-11-26 (33)](https://user-images.githubusercontent.com/113997426/204082684-9fed8789-cd35-4e45-acf8-8637e9a9c2d6.png)
+
+![2022-11-26 (34)](https://user-images.githubusercontent.com/113997426/204082691-39990813-694b-4796-b8f7-54fdb89145aa.png)
+
+![2022-11-26 (35)](https://user-images.githubusercontent.com/113997426/204082730-0a65bd55-db55-46f6-b721-698f5908cb4c.png)
+
+10) Настроила модель в behaviour parameters, проверила ее работу
+
+![2022-11-26 (36)](https://user-images.githubusercontent.com/113997426/204082795-0be4c1c8-4fc6-43ee-982c-e68f85361617.png)
+
+![2022-11-26 (37)](https://user-images.githubusercontent.com/113997426/204082820-12ea9474-f6c1-4676-82ee-65efbdca6640.png)
+
+![2022-11-26 (38)](https://user-images.githubusercontent.com/113997426/204082870-61b0c6f7-e875-407b-9372-7edb7d775cbb.png)
+
+
 ## Задание 2
-
-Ход работы:
-
-
 
 
 ## Задание 3
