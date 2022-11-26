@@ -59,7 +59,7 @@
 
 5) Создала и привязала к RollerAgent новый скрипт С#
 
-''' c#
+```c#
 
 using System.Collections;
 using System.Collections.Generic;
@@ -119,7 +119,7 @@ public class RollerAgent : Agent
     }
 }
 
-'''
+```
 
 
 ## Задание 2
