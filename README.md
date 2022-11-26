@@ -155,6 +155,19 @@ public class Perceptron : MonoBehaviour {
 }
 ```
 
+3) Настроила массив Ts, добавив в него логический элемент OR
+
+![2022-11-26 (42)](https://user-images.githubusercontent.com/113997426/204099276-c74b3bc5-7e82-4555-ade4-9d7a023878e5.png)
+
+4) Запустила работу программы и получила следующие результаты:
+
+![2022-11-26 (43)](https://user-images.githubusercontent.com/113997426/204099521-5ee7036a-4c9f-479d-995b-592415d01145.png)
+![2022-11-26 (44)](https://user-images.githubusercontent.com/113997426/204099526-c213bd67-1ede-4bb2-b89c-f8120471305e.png)
+![2022-11-26 (45)](https://user-images.githubusercontent.com/113997426/204099530-e9e97293-cafa-4ee7-af42-4994114f7fca.png)
+![2022-11-26 (46)](https://user-images.githubusercontent.com/113997426/204099535-ef0de24a-a1b8-461b-bb0b-e1a2ba3392af.png)
+
+За 4 и больше итераций метода Train перцептрон успевает обучиться и количество ошибок TotalError снижается до 0. Успех подтверждается с помощью результатов теста методом CalcOutput в последних четырех строчках
+
 ## Задание 2
 
 
