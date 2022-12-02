@@ -81,7 +81,18 @@ pip install torch~=1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
 ![2022-12-02 (18)](https://user-images.githubusercontent.com/113997426/205329355-887a33f6-dfba-4257-9af5-15484d4a66d9.png)
 
 
-## Задание 2
+## Задание 2 Измените параметры файла. yaml-агента и определить какие параметры и как влияют на обучение модели.
+
+Буду изменять параметры yaml-файла и отслеживать графики, уделяя особое вгимание cumulative reward
+
+1) Изменила batch_size: 1024 на 2000, график следующий
+
+![2022-12-02 (20)](https://user-images.githubusercontent.com/113997426/205330348-a455ee3d-281e-4340-b20e-65a82d147cf8.png)
+
+Кривая Economic в конце стала стремиться вниз
+
+2) Изменила lambd: 0.95 на 0.91
+
 
 
 ## Задание 3
