@@ -91,7 +91,12 @@ pip install torch~=1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
 
 Кривая Economic в конце стала стремиться вниз
 
-2) Изменила lambd: 0.95 на 0.91
+2) Изменила lambd: 0.95 на 0.9
+
+![2022-12-02 (22)](https://user-images.githubusercontent.com/113997426/205334728-34a8394e-8d26-4a2f-b8e0-9b108f333271.png)
+В этот раз график reard вышел на плато 
+
+3) Изменила epsilon: 0.2 на 0.1 
 
 
 
