@@ -98,6 +98,24 @@ pip install torch~=1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
 
 3) Изменила epsilon: 0.2 на 0.1 
 
+![2022-12-02 (28)](https://user-images.githubusercontent.com/113997426/205340481-858ec470-9a5b-4735-a5c2-879cabe58425.png)
+График показал резкий и значительный рост параметра
+
+4) А если в обратную сторону? epsilon: 0.3
+
+![2022-12-02 (26)](https://user-images.githubusercontent.com/113997426/205339010-bda58d1d-51ac-4281-93e2-332d816ca5e9.png)
+График практически не изменил форму, только значения
+
+5) Изменила num_epoch: 3 на 10
+
+![2022-12-02 (30)](https://user-images.githubusercontent.com/113997426/205342209-c9421e4e-d10f-419d-8158-26fa243063bd.png)
+График на каждой итерации стабильно равен 1
+
+6) Изменила buffer_size: 10240 на 50240
+
+![2022-12-02 (34)](https://user-images.githubusercontent.com/113997426/205344174-5b549204-c9a2-4519-a72b-2216798609fe.png)
+График в начале резко пошел вниз, но затем начал, хоть и медленнее, но расти
+
 
 
 ## Задание 3
