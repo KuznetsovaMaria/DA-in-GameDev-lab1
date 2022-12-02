@@ -48,8 +48,33 @@
 
 2) В anaconda prompt создала и запустила виртуальное пространство
 
+```
+conda create -n MLAgent python=3.6.13
+conda activate MLAgent
+```
 
+3) Установила необходимые библиотеки
 
+```
+pip install mlagents==0.28.0
+pip install torch~=1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
+```
+
+4) Начала обучение ml агента
+
+![2022-12-02 (5)](https://user-images.githubusercontent.com/113997426/205328787-98e1e80c-e6d2-45aa-889f-91acb17581d6.png)
+
+5) Проверила сохранение результатов в папку
+
+![2022-12-02 (14)](https://user-images.githubusercontent.com/113997426/205328897-c99ed900-aeb5-4445-bd48-ab0988a99b35.png)
+
+6) Установила и запустила TensorBoard
+
+![2022-12-02 (15)](https://user-images.githubusercontent.com/113997426/205329095-27152e8b-f150-42b1-9a58-57912b6f348e.png)
+
+7) Получила следующие графики
+
+![2022-12-02 (16)](https://user-images.githubusercontent.com/113997426/205329163-de28ff3e-bac1-4e43-8f4c-4bab33a90809.png)
 
 
 ## Задание 2
