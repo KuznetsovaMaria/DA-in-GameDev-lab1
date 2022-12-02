@@ -76,6 +76,10 @@ pip install torch~=1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
 
 ![2022-12-02 (16)](https://user-images.githubusercontent.com/113997426/205329163-de28ff3e-bac1-4e43-8f4c-4bab33a90809.png)
 
+![2022-12-02 (17)](https://user-images.githubusercontent.com/113997426/205329339-1a88b6e4-44e2-4396-9a90-1dfd42df6e80.png)
+
+![2022-12-02 (18)](https://user-images.githubusercontent.com/113997426/205329355-887a33f6-dfba-4257-9af5-15484d4a66d9.png)
+
 
 ## Задание 2
 
